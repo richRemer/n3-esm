@@ -3,5 +3,8 @@
   "version": "0.0.0-alpha1",
   "description": "subset of N3 library ported to work with ES modules",
   "type": "module",
-  "exports": "./n3.js"
+  "exports": "./n3.js",
+  "scripts": {
+    "test": "echo no tests defined"
+  }
 }
