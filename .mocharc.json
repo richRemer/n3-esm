@@ -1,0 +1,7 @@
+{
+  "require": [
+    "test/test-setup.js"
+  ],
+  "timeout": 100,
+  "slow": 50
+}

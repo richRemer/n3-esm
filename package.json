@@ -1,10 +1,18 @@
 {
   "name": "@welib/n3-esm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "subset of N3 library ported to work with ES modules",
   "type": "module",
   "exports": "./n3.js",
   "scripts": {
-    "test": "echo no tests defined"
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@rdfjs/data-model": "^1.3.4",
+    "chai": "^4.3.7",
+    "chai-things": "^0.2.0",
+    "mocha": "^10.2.0",
+    "queue-microtask": "^1.2.3",
+    "rdf-isomorphic": "^1.3.1"
   }
 }
