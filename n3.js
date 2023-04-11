@@ -400,12 +400,12 @@ export class Quad extends Term {
 /*INSERT:*/export const Triple = Quad;/*INSERTED*/
 
 // ### Escapes the quotes within the given literal
-export function escapeQuotes(id) {
+function escapeQuotes(id) {
   return id.replace(escapedLiteral, (_, quoted) => `"${quoted.replace(/"/g, '""')}`);
 }
 
 // ### Unescapes the quotes within the given literal
-export function unescapeQuotes(id) {
+function unescapeQuotes(id) {
   return id.replace(escapedLiteral, (_, quoted) => `"${quoted.replace(/""/g, '"')}`);
 }
 
