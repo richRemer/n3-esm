@@ -1,4 +1,4 @@
-import { DefaultGraph, Term } from '../n3.js';
+import { DefaultGraph, Term } from '../src/N3DataFactory.js';
 
 describe('DefaultGraph', () => {
   describe('The DefaultGraph module', () => {

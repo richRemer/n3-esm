@@ -1,4 +1,4 @@
-import { BlankNode, Term } from '../n3.js';
+import { BlankNode, Term } from '../src/N3DataFactory.js';
 
 describe('BlankNode', () => {
   describe('The BlankNode module', () => {

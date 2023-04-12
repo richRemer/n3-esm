@@ -1,12 +1,12 @@
 import {
-  DataFactory,
+  default as DataFactory,
   NamedNode,
   Literal,
   BlankNode,
   Variable,
   DefaultGraph,
   Quad,
-} from '../n3.js';
+} from '../src/N3DataFactory.js';
 
 describe('DataFactory', () => {
   describe('namedNode', () => {

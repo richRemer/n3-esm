@@ -10,32 +10,10 @@ import {
   termFromId,
 } from '../n3.js';
 
-/*STRIKE:
 import {
   escapeQuotes,
   unescapeQuotes,
-} from '../src/N3DataFactory';
-*/
-//INSERT:
-
-/**
- * These functions/const are exported from the N3DataFactory.js file in the
- * original rdfjs/N3.js project, but since the original files have been merged
- * into a monolithic file in this project, they are not available so that the
- * module interface remains identical to the original project.
- */
-
-const escapedLiteral = /^"(.*".*)(?="[^"]*$)/;
-
-export function escapeQuotes(id) {
-  return id.replace(escapedLiteral, (_, quoted) => `"${quoted.replace(/"/g, '""')}`);
-}
-
-// ### Unescapes the quotes within the given literal
-export function unescapeQuotes(id) {
-  return id.replace(escapedLiteral, (_, quoted) => `"${quoted.replace(/""/g, '"')}`);
-}
-//INSERTED
+} from '../src/N3DataFactory.js';
 
 describe('Term', () => {
   describe('The Term module', () => {
