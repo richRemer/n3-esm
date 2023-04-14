@@ -6,52 +6,9 @@ import {
   Quad,
   termFromId, termToId,
 } from '../n3.js';
-
-//STRIKE: import namespaces from '../src/IRIs';
-//INSERT:
-
-/**
- * These consts is exported from the IRIs.js file in the original rdfjs/N3.js
- * project, but since the original files have been merged into a monolithic
- * file in this project, it is not available so that the module interface
- * remains identical to the original project.
- */
-const RDF  = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    XSD  = 'http://www.w3.org/2001/XMLSchema#',
-    SWAP = 'http://www.w3.org/2000/10/swap/';
-
-const namespaces = {
-  xsd: {
-    decimal: `${XSD}decimal`,
-    boolean: `${XSD}boolean`,
-    double:  `${XSD}double`,
-    integer: `${XSD}integer`,
-    string:  `${XSD}string`,
-  },
-  rdf: {
-    type:       `${RDF}type`,
-    nil:        `${RDF}nil`,
-    first:      `${RDF}first`,
-    rest:       `${RDF}rest`,
-    langString: `${RDF}langString`,
-  },
-  owl: {
-    sameAs: 'http://www.w3.org/2002/07/owl#sameAs',
-  },
-  r: {
-    forSome: `${SWAP}reify#forSome`,
-    forAll:  `${SWAP}reify#forAll`,
-  },
-  log: {
-    implies: `${SWAP}log#implies`,
-  },
-};
-//INSERTED
-
+import namespaces from '../src/IRIs.js';
 import chai, { expect } from 'chai';
-//STRIKE:import { Readable } from 'readable-stream';
-/*INSERT:*/import {ReadableStream as Readable} from "stream/web";/*INSERTED*/
-//STRIKE:import arrayifyStream from 'arrayify-stream';
+import {ReadableStream as Readable} from "stream/web";
 
 const should = chai.should();
 
@@ -1694,18 +1651,12 @@ function forResultStream(testFunction, result) {
   return function (done) {
     if (typeof result === 'function') result = result();
 
-    iterateResult(result)
+    iterate(result, true)
       .then(array => {
         items.unshift(array);
         testFunction.apply({}, items)();
       })
       .then(done, done);
-
-    async function iterateResult(iterable) {
-      const items = [];
-      for await (const item of iterable) items.push(item);
-      return items;
-    }
   };
 }
 
@@ -1741,12 +1692,6 @@ function addList(store, ...items) {
     }
   });
   return listElements;
-}
-
-async function iterate(iterable) {
-  for await (const item of iterable) {
-    // don't care; just trying to get to the end
-  }
 }
 
 function listsToJSON(lists) {

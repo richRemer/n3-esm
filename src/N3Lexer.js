@@ -1,6 +1,5 @@
 // **N3Lexer** tokenizes N3 documents.
 import namespaces from './IRIs.js';
-//STRIKE:import queueMicrotask from 'queue-microtask';
 
 const { xsd } = namespaces;
 
