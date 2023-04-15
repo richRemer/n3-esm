@@ -469,10 +469,8 @@ export default class N3Lexer {
     // Otherwise, the input must be a stream
     else {
       this._pendingBuffer = null;
-      if (typeof input.setEncoding === 'function')
-        input.setEncoding('utf8');
       // Adds the data chunk to the buffer and parses as far as possible
-      input.on('data', data => {
+      iterateEach(input, data => {
         if (this._input !== null && data.length !== 0) {
           // Prepend any previous pending writes
           if (this._pendingBuffer) {
@@ -493,13 +491,19 @@ export default class N3Lexer {
             this._tokenizeToEnd(callback, false);
           }
         }
-      });
+      })
       // Parses until the end
-      input.on('end', () => {
+      .then(() => {
         if (typeof this._input === 'string')
           this._tokenizeToEnd(callback, true);
-      });
-      input.on('error', callback);
+      })
+      .catch(callback);
+    }
+
+    async function iterateEach(asyncIterable, callback) {
+      for await (const item of asyncIterable) {
+        callback(item);
+      }
     }
   }
 }

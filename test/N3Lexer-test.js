@@ -58,23 +58,21 @@ describe('Lexer', () => {
                         'Unexpected "<http://ex.org/bla\\uXYZZxyzzfoo>" on line 1.'));
 
     it('should not tokenize an IRI with a non-numeric 4-digit unicode escapes', done => {
-      const stream = new EventEmitter(), lexer = new Lexer();
+      const stream = streamOf('<\\uz234>'), lexer = new Lexer();
       lexer.tokenize(stream, (error, token) => {
         error.should.be.an.instanceof(Error);
         error.message.should.equal('Unexpected "<\\uz234>" on line 1.');
         done(token);
       });
-      stream.emit('data', '<\\uz234>');
     });
 
     it('should not tokenize an IRI with a non-numeric 8-digit unicode escapes', done => {
-      const stream = new EventEmitter(), lexer = new Lexer();
+      const stream = streamOf('<\\Uz2345678>'), lexer = new Lexer();
       lexer.tokenize(stream, (error, token) => {
         error.should.be.an.instanceof(Error);
         error.message.should.equal('Unexpected "<\\Uz2345678>" on line 1.');
         done(token);
       });
-      stream.emit('data', '<\\Uz2345678>');
     });
 
     it('should tokenize an IRI with four-digit unicode escapes',
@@ -1142,72 +1140,18 @@ describe('Lexer', () => {
       ]);
     });
 
-    describe('passing data after the stream has been finished', () => {
-      const tokens = [];
-      let error;
-      before(() => {
-        const stream = new EventEmitter(), lexer = new Lexer();
-        lexer.tokenize(stream, (err, token) => {
-          if (err)
-            error = err;
-          else
-            tokens.push(token);
-        });
-        stream.emit('data', '<a> ');
-        stream.emit('end');
-        stream.emit('data', '<b> ');
-        stream.emit('end');
-      });
-
-      it('parses only the first chunk (plus EOF)', () => {
-        tokens.should.have.length(2);
-      });
-
-      it('does not emit an error', () => {
-        expect(error).to.not.exist;
-      });
-    });
-
-    describe('passing data after a syntax error', () => {
-      const tokens = [];
-      let error;
-      before(() => {
-        const stream = new EventEmitter(), lexer = new Lexer();
-        lexer.tokenize(stream, (err, token) => {
-          if (err)
-            error = err;
-          else
-            tokens.push(token);
-        });
-        stream.emit('data', '<a> ');
-        stream.emit('data', ' error ');
-        stream.emit('end');
-        stream.emit('data', '<b> ');
-        stream.emit('end');
-      });
-
-      it('parses only the first chunk', () => {
-        tokens.should.have.length(1);
-      });
-
-      it('emits the error', () => {
-        expect(error).to.exist;
-        expect(error).to.have.property('message', 'Unexpected "error" on line 1.');
-      });
-    });
-
     describe('when the stream errors', () => {
       const tokens = [];
       let error;
       before(() => {
-        const stream = new EventEmitter(), lexer = new Lexer();
+        const stream = (async function*() {throw new Error('my error')})();
+        const lexer = new Lexer();
         lexer.tokenize(stream, (err, token) => {
           if (err)
             error = err;
           else
             tokens.push(token);
         });
-        stream.emit('error', new Error('my error'));
       });
 
       it('passes the error', () => {
@@ -1341,27 +1285,9 @@ function shouldNotTokenize(lexer, input, expectedError) {
   };
 }
 
-function streamOf() {
-  const elements = Array.prototype.slice.call(arguments),
-      stream = new EventEmitter();
-
-  stream.setEncoding = function (encoding) {
-    if (encoding === 'utf8')
-      queueMicrotask(next);
-  };
-
-  function next() {
-    if (elements.length) {
-      const element = elements.shift();
-      // use "null" to stall the stream
-      if (element !== null) {
-        stream.emit('data', element);
-        queueMicrotask(next);
-      }
-    }
-    else {
-      stream.emit('end');
-    }
+async function *streamOf(...items) {
+  for (const item of items) {
+    await new Promise(go => setTimeout(go, 0));
+    yield item;
   }
-  return stream;
 }
