@@ -1660,23 +1660,6 @@ function forResultStream(testFunction, result) {
   };
 }
 
-function ArrayReader(items) {
-  return new Readable({
-    start(controller) {
-      function read() {
-        if (items.length) {
-          controller.enqueue(items.shift());
-          read();
-        } else {
-          controller.close();
-        }
-      }
-
-      read();
-    }
-  });
-}
-
 function addList(store, ...items) {
   if (!items.length)
     return new NamedNode(namespaces.rdf.nil);
