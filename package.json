@@ -1,6 +1,6 @@
 {
   "name": "@welib/n3-esm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "subset of N3 library ported to work with ES modules",
   "type": "module",
   "exports": "./n3.js",

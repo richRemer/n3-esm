@@ -5,6 +5,7 @@ import {ReadableStream} from "stream/web";
 global.expect = chai.expect;
 global.iterate = iterate;
 global.ArrayReader = ArrayReader;
+global.ReadableStream = ReadableStream;
 
 chai.should();
 chai.use(things);
