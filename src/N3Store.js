@@ -1,6 +1,6 @@
 // **N3Store** objects store N3 quads by graph in memory.
 import { default as N3DataFactory, termToId, termFromId } from './N3DataFactory.js';
-import { ReadableStream as Readable } from 'stream/web';
+import {ReadableStream} from 'stream/web';
 import namespaces from './IRIs.js';
 
 // ## Constructor
@@ -273,7 +273,7 @@ export default class N3Store {
     const reader = stream.getReader();
 
     // return stream wrapper; add quads from original stream
-    return new Readable({
+    return new ReadableStream({
       start(controller) {
         function read() {
           reader.read().then(({done, value}) => {
@@ -339,7 +339,7 @@ export default class N3Store {
     const store = this;
     const reader = stream.getReader();
 
-    return new Readable({
+    return new ReadableStream({
       start(controller) {
         function read() {
           reader.read().then(({done, value}) => {
@@ -363,7 +363,7 @@ export default class N3Store {
   removeMatches(subject, predicate, object, graph) {
     const matchFields = [...arguments];
     const store = this;
-    const stream = new Readable({
+    const stream = new ReadableStream({
       start(controller) {
         for (const quad of store.readQuads(...matchFields)) {
           // TODO: asynchronize this?

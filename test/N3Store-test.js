@@ -8,7 +8,6 @@ import {
 } from '../n3.js';
 import namespaces from '../src/IRIs.js';
 import chai, { expect } from 'chai';
-import {ReadableStream as Readable} from "stream/web";
 
 const should = chai.should();
 
