@@ -1,3 +1,7 @@
+Important!  This project is deprecated in favor of using
+[jspm](https://www.npmjs.com/package/jspm) to create
+[importmaps](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap).
+
 This is a fork of the [rdfjs/N3.js project](https://github.com/rdfjs/N3.js)
 suitable for use in the browser.  Specifically, this fork means to obviate any
 need for using a bundler such as webpack or browserify so that the code can be
